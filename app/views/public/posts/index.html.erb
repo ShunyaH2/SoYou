@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h2>投稿一覧</h2>
+  <% link_to "新規投稿", new_post_path, class: "btn btn-primary" %>
+</div>
+
+<table class="table mt-3">
+  <thread>
+    <tr>
+      <th>出来事の日付</th>
+      <th>本文</th>
+      <th></th>
+    </tr>
+  </thread>
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.occurred_on %></td>
+        <td><%= truncate(post.body, length: 40) %></th>
+        <td><%= link_to "詳細", post_path(post), class: "btn btn-sm btn-outline-secondary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

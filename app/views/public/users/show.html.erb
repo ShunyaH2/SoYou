@@ -1,0 +1,28 @@
+<h1><%= (@user.name || @user.email) %>さんのページ</h1>
+
+<p>誕生日: <%= @user.profile&.birthday %></P>
+
+<div class="actions">
+  <% if current_user == @user %>
+    <%= link_to "プロフィール編集", edit_user_path(@user), class: "btn btn-primary" %>
+    <%= button_to "退会（論理削除）", withdraw_user_path(@user), method: :patch,
+      data: { confirm: "本当に退会しますか？この操作は取り消せません。" },
+      class: "btn btn-danger" %>
+  <% end %>
+</div>
+
+<hr>
+
+<h2>あなたの投稿一覧</h2>
+<% if @posts.any? %>
+  <ul>
+    <% @posts.each do |post| %>
+      <li>
+        <%= link_to post.short_body(20), post_path(post) %>
+        <small><%= l post.created_at, format: :short %></small>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>まだ投稿がありません。</p>
+<% end %>

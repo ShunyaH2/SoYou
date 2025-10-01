@@ -1,0 +1,27 @@
+<h1>プロフィール編集</h1>
+
+<%= form_with model: @user, url: user_path(@user), method: :patch, local: true do |f| %>
+  <div>
+    <%= f.label :email, "メールアドレス" %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <fieldset>
+    <legend>プロフィール</legend>
+    <%= f.fields_for :profile do |pf| %>
+      <div>
+        <%= pf.label :name, "氏名" %><br>
+        <%= pf.text_field :name %>
+      </div>
+      <div>
+        <%= pf.label :birthday, "誕生日" %><br>
+        <%= pf.date_field :birthday %>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <div class="mt-3">
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+    <%= link_to "戻る", user_path(@user), class: "btn btn-secondary" %>
+  </div>
+<% end %>

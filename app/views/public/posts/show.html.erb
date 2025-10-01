@@ -1,0 +1,15 @@
+<h2>投稿詳細</h2>
+<p><storong>出来事の日付：</strong> <%= @post.occurred_on %></p>
+<p><strong>本文：</strong><br><%= simple_format(@post.body) %></p>
+
+<div class="mt-3">
+  <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
+
+  <% if @post.user.id == current_user.id %>
+    <%= link_to "編集", edit_post_path(@post), clss: "btn btn-outline-primary" %>
+    <%= link_to "削除", post_path(@post),
+      method: :delete,
+      data: { confirm: "本当に削除しますか？" },
+      class: "btn btn-outline-danger" %>
+    <% end %>
+  </div>

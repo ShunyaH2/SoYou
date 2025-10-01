@@ -1,0 +1,26 @@
+<% if @post.errors.any? %>
+  <div class="alert alert-danger">
+    <h4><%= pluralize(@post.errors.count, "error") %>があり保存できませんでした</h4>
+    <ul class="mb-0">
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% render "shared/errors", object: @post %>
+
+<%= form_with model: @post, local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :occurred_on, "出来事の日付" %>
+    <%= f.date_field :occurred_on, class: "form-control", required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :body, "エピソード本文" %>
+    <%= f.text_area :body, rowa: 6, class: "form-control", requires: true %>
+  </div>
+
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>
