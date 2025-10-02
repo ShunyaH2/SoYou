@@ -13,3 +13,12 @@
       class: "btn btn-outline-danger" %>
     <% end %>
   </div>
+
+  <p>
+    対象：
+    <% if @post.profiles.any? %>
+      <%= @post.profiles.map(&:name).join("・") %>
+    <% else %>
+       指定なし
+    <% end %>
+  </p>

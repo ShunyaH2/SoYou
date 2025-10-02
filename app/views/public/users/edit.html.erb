@@ -15,7 +15,7 @@
       </div>
       <div>
         <%= pf.label :birthday, "誕生日" %><br>
-        <%= pf.date_field :birthday %>
+        <%= pf.date_field :birthday, value: @user.profile&.birthday || 30.years.ago.to_date %>
       </div>
     <% end %>
   </fieldset>

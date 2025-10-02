@@ -1,17 +1,20 @@
 Rails.application.routes.draw do
-  namespace :public do
-    get 'users/show'
-    get 'users/edit'
-  end
   devise_for :users # 認証用
   
-  # Public（URLに /public を付けない。Controller は Public::）
-  scope module: :public do
+   # Public（URLに /public を付けない。Controller は Public::）
+   scope module: :public do
     root 'homes#top'
-
+    
+    # ユーザーマイページ系
     resources :users, only: [:show, :edit, :update] do
       member { patch :withdraw }
     end
+
+    # 家族とプロフィール（ユーザー1任につき家族1つ想定なので単数resource）
+    resource :family, only: [:show, :edit, :update] do
+      resources :profiles
+    end
+
     resources :posts
   end
 

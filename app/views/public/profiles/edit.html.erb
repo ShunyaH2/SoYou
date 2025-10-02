@@ -1,0 +1,18 @@
+<h1>プロフィル編集</h1>
+
+<%= form_with model: [:family, @profile], local: true do |f| %>
+  <div>
+    <%= f.label :name, "氏名" %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :birthday, "誕生日" %><br>
+    <%= f.date_field :birthday, value: @profile.birthday || 10.years.ago.to_date %>
+  </div>
+
+  <div class="mt-3">
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+    <%= link_to "戻る", family_profiles_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>

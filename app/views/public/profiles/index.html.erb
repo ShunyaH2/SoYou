@@ -1,0 +1,24 @@
+<h1>プロフィール一覧</h1>
+
+<p>
+  <%= link_to "新規追加", new_family_profile_path, class: "btn btn-primary" %>
+</p>
+
+<% if @profiles.any? %>
+  <ul>
+    <% @profiles.each do |p| %>
+      <li>
+        <strong><%= p.name %></strong>
+        (誕生日: <%= p.birthday&.strftime("%Y-%m-%d") || "未設定" %>)
+        |
+        <%= link_to "編集", edit_family_profile_path(p) %>
+        |
+        <%= link_to "削除", family_profile_path(p),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？" } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>プロフィールはまだありません。</p>
+<% end %>

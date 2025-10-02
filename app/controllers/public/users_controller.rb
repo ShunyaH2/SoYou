@@ -4,19 +4,19 @@ class Public::UsersController < ApplicationController
   before_action :ensure_self!, only: [:edit, :upadate, :withdraw]
   
   def show
-    @posts = @user.posts.order(created_at: :desc)
+    @posts = @user.posts.includes(:profiles).order(created_at: :desc)
   end
 
   def edit
     @user.build_profile unless @user.profile
   end
 
-def user_params
-  params.require(:user)
-        .permit(:email, profile_attributes: [:id, :name, :birthday])
-end
+  def user_params
+    params.require(:user)
+          .permit(:email, profile_attributes: [:id, :name, :birthday])
+  end
 
-  def upadate
+  def update
     if @user.update(user_params)
       flash[:notice] = "プロフィールを更新しました"
       redirect_to @user
@@ -48,6 +48,7 @@ end
   end
 
   def user_params
-    params.require(:user).permit(:name, email)
-  end
+    params.require(:user)
+          .permit(:email, profile_attributes: [:id, :name, :birthday])
+  end  
 end

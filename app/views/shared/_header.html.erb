@@ -13,6 +13,7 @@
           <li class="nav-item"><%= link_to "サインアウト", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "投稿一覧", posts_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "新規投稿", new_post_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "プロフィール管理", family_profiles_path, class: "nav-link" %></li>
         <% else %>
           <li class="nav-item"><%= link_to "About", "#{root_path}#about", class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "新規登録", new_user_registration_path, class: "nav-link" %></li>

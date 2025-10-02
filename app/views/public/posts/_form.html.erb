@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-<% render "shared/errors", object: @post %>
+<%#= render "shared/errors", object: @post %>
 
 <%= form_with model: @post, local: true do |f| %>
   <div class="form-group">
@@ -19,8 +19,24 @@
 
   <div class="form-group">
     <%= f.label :body, "エピソード本文" %>
-    <%= f.text_area :body, rowa: 6, class: "form-control", requires: true %>
+    <%= f.text_area :body, rows: 6, class: "form-control", required: true %>
   </div>
+
+  <fieldset class="mt-3">
+    <legend>このエピソードの対象</legend>
+
+    <!-- 何も選ばれなかったときでも profile_ids パラメータが送られるようにする hissen -->
+    <%= hidden_field_tag "post[profile_ids][]","" %>
+
+    <% current_user.family.profiles.each do |p| %>
+      <label style="display:block;">
+        <!-- 第3引数：チェック済みか（既存の @post に対して） -->
+        <%= check_box_tag "post[profile_ids][]", p.id, @post.profile_ids.include?(p.id) %>
+        <%= p.name %>
+      </label>
+    <% end %>
+  </fieldset>
 
   <%= f.submit class: "btn btn-primary" %>
 <% end %>
+

@@ -12,17 +12,5 @@
 </div>
 
 <hr>
-
 <h2>あなたの投稿一覧</h2>
-<% if @posts.any? %>
-  <ul>
-    <% @posts.each do |post| %>
-      <li>
-        <%= link_to post.short_body(20), post_path(post) %>
-        <small><%= l post.created_at, format: :short %></small>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>まだ投稿がありません。</p>
-<% end %>
+<%= render "public/posts/table", posts: @posts, empty_message: "まだ投稿がありません。" %>

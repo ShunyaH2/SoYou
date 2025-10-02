@@ -4,7 +4,9 @@ class Public::PostsController < ApplicationController
   before_action :authorize_owner!, only: %i[edit update destroy]
 
   def index
-    @posts = current_user.posts.order(occurred_on: :desc).includes(:user)
+    @posts = current_user.posts
+      .order(occurred_on: :desc)
+      .includes(:profiles)
   end
 
   def show
@@ -27,6 +29,8 @@ class Public::PostsController < ApplicationController
   end
 
   def update 
+    # 全外しでクリアできるよう、パラメータがない場合はから配列を入れる（保険）
+    params[:post][:profile_ids] ||= [] if params[:post]
     if @post.update(post_params)
       redirect_to @post, notice: "投稿を更新しました。"
     else
@@ -42,7 +46,7 @@ class Public::PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.find(params[:id]) # 自分の投稿だけ
   end
 
   def authorize_owner!
@@ -50,6 +54,6 @@ class Public::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:body, :occurred_on)
+    params.require(:post).permit(:body, :occurred_on, profile_ids: [])
   end
 end

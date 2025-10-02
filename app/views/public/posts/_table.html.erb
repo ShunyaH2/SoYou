@@ -1,0 +1,21 @@
+<%# 引数： posts(必須), empty_message(任意) %>
+<% posts ||= [] %>
+<% empty_message ||= "まだ投稿がありません。" %>
+
+<% if posts.any? %>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th>出来事の日付</th>
+        <th>本文</th>
+        <th>対象者</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: "public/posts/row", collection: posts, as: :post %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="text-muted"><%= empty_message %></p>
+<% end %>
