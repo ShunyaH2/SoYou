@@ -1,5 +1,9 @@
-<% if object && object.errors.any? %>
-  <div class="alert alert-danger">
+<%# 使い方： render "shared/errors", object: @post %>
+<% if defined?(object) && object && object.errors.any? %>
+  <div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">
+      <%= pluralize(object.errors.count, "error") %>があり保存できませんでした
+    </h4>
     <ul class="mb-0">
       <% object.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
