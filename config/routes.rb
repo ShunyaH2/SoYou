@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  devise_for :users # 認証用
+  # 認証用
+  devise_for :users, controllers: {
+    registrations: 'public/users/registrations',
+    sessions: 'public/users/sessions'
+  }
   
    # Public（URLに /public を付けない。Controller は Public::）
-   scope module: :public do
+  scope module: :public do
     root 'homes#top'
     
     # ユーザーマイページ系
@@ -19,10 +23,10 @@ Rails.application.routes.draw do
   end
 
    # Admin（URLに /admin を付ける。Controller は Admin::）
-   namespace :admin do
+  namespace :admin do
     root 'dashbord#top'
     resources :users, only: [:index, :show, :update]
     resources :users, only: [:index, :show, :destroy]
-   end
   end
+end
   

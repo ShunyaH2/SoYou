@@ -13,22 +13,11 @@
   
   <body>
     <%= render 'shared/header' %>
-    
-    <% flash.each do |key, value| %>
-      <div class="flash <%= key %>"><%= value %></div>
-    <% end %>
 
-    <div class="container mt-3">
-      <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key.to_s == 'notice' ? 'success' : 'danger' %>">
-          <%= value %>
-        </div>
-      <% end %>
+    <div class="container mt-5">
+      <%= render "shared/flash" %>
+      <%= yield %>
     </div>
-
-    <%= render "shared/flash" %>
-
-    <%= yield %>
   </body>
 </html>
 

@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="text-center">Sign up</h2>
+
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= render "public/users/shared/error_messages", resource: resource %>
+
+          <div class="mb-2">
+            <%= f.label :email %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+          </div>
+
+          <div class="mb-2">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+          </div>
+
+          <div class="mb-2">
+            <%= f.label :password_confirmation %><br />
+            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+          </div>
+
+          <div class="mb-2">
+            <%= f.label :family_code %>
+            <%= f.text_field :family_code, class: "form-control" %>
+          </div>
+
+          <div class="my-4">
+            <%= f.submit "Sign up", class: "btn btn-primary btn-block" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%= render "public/users/shared/links" %>
+  </div>
+</div>

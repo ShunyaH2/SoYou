@@ -11,11 +11,6 @@ class Public::UsersController < ApplicationController
     @user.build_profile unless @user.profile
   end
 
-  def user_params
-    params.require(:user)
-          .permit(:email, profile_attributes: [:id, :name, :birthday])
-  end
-
   def update
     if @user.update(user_params)
       flash[:notice] = "プロフィールを更新しました"

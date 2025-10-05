@@ -1,7 +1,7 @@
 class Public::PostsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_post, only: %i[show edit update destroy]
-  before_action :authorize_owner!, only: %i[edit update destroy]
+  before_action :set_post, only: %i(show edit update destroy)
+  before_action :authorize_owner!, only: %i(edit update destroy)
 
   def index
     @posts = current_user.posts
