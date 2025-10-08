@@ -10,15 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_10_02_065723) do
+ActiveRecord::Schema.define(version: 2025_10_08_071930) do
 
   create_table "families", force: :cascade do |t|
-    t.integer "user_id", null: false
     t.string "code"
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_families_on_user_id"
   end
 
   create_table "post_profiles", force: :cascade do |t|
@@ -60,15 +58,17 @@ ActiveRecord::Schema.define(version: 2025_10_02_065723) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
+    t.integer "family_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["family_id"], name: "index_users_on_family_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["status"], name: "index_users_on_status"
   end
 
-  add_foreign_key "families", "users"
   add_foreign_key "post_profiles", "posts"
   add_foreign_key "post_profiles", "profiles"
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "families"
   add_foreign_key "profiles", "users"
+  add_foreign_key "users", "families"
 end

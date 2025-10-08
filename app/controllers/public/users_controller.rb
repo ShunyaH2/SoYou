@@ -9,6 +9,7 @@ class Public::UsersController < ApplicationController
 
   def edit
     @user.build_profile unless @user.profile
+    @user.profile.birthday ||= 30.years.ago.to_date
   end
 
   def update

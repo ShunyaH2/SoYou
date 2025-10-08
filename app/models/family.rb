@@ -1,6 +1,5 @@
 class Family < ApplicationRecord
-  belongs_to :user
+  has_many :users, dependent: :nullify
   has_many :profiles, dependent: :destroy
-
   validates :name, presence: true
 end
