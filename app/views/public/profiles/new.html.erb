@@ -1,18 +1,29 @@
-<h1>プロフィール追加</h1>
+<div class="row">
+  <div class="col-sm-10 offset-sm-1 col-md-6 offset-md-3">
+    <div class="card shadoe-sm">
+      <div class="card-body">
+        <h2 class="text-center mb-4">プロフィール追加</h2>
 
-<%= form_with model: @profile, url: family_profiles_path, local: true do |f| %>
-  <div>
-    <%= f.label :name, "氏名" %><br>
-    <%= f.text_field :name %>
-  </div>
+        <%# エラーメッセージ（あれば表示） %>
+        <%= render "shared/errors", object: @profile if lookup_context.exists?("shared/errors") %>
 
-  <div>
-    <%= f.label :birthday, "誕生日" %><br>
-    <%= f.date_field :birthday, value: 10.years.ago.to_date %>
-  </div>
+        <%= form_with model: @profile, url: family_profiles_path, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, "氏名", class: "form-label" %>
+            <%= f.text_field :name, class: "form-control", placeholder: "例）さちこ" %>
+          </div>
 
-  <div class="mt-3">
-    <%= f.submit "追加する", class: "btn btn-primary" %>
-    <%= link_to "戻る", family_profiles_path, class: "btn btn-secondary" %>
+          <div class="mb-3">
+            <%= f.label :birthday, "誕生日", class: "form-label" %>
+            <%= f.date_field :birthday, value: 10.years.ago.to_date, class: "form-control" %>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <%= link_to "戻る", family_profiles_path, class: "btn btn-outline-secondary" %>
+            <%= f.submit "追加する", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>

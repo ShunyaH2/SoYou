@@ -17,10 +17,12 @@
             <legend class="w-auto px-2 fs-5">プロフィール情報</legend>
 
             <%= f.fields_for :profile do |pf| %>
-              <div class="mb-3">
-                <%= pf.label :name, "氏名", class: "form-label" %>
-                <%= pf.text_field :name, class: "form-control" %>
-              </div>
+              <%= pf.hidden_field :id if @user.profile&.persisted? %>
+              
+                <div class="mb-3">
+                  <%= pf.label :name, "氏名", class: "form-label" %>
+                  <%= pf.text_field :name, class: "form-control" %>
+                </div>
 
               <div class="mb-3">
                 <%= pf.label :birthday, "誕生日", class: "form-label" %>

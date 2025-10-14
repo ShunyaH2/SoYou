@@ -10,7 +10,7 @@ class User < ApplicationRecord
 
   # 本人用プロフィール（1ユーザーに1つ）
   has_one :profile, dependent: :destroy
-  accepts_nested_attributes_for :profile
+  accepts_nested_attributes_for :profile, update_only: true
   # プロフィールがあればnameを呼べる
   delegate :name, to: :profile, allow_nil: true 
 
@@ -20,7 +20,7 @@ class User < ApplicationRecord
    # 論理削除用
   enum status: { active: 0, withdrawn: 1 }
   
-  before_validation :assign_family_by_code
+  before_validation :assign_family_by_code, on: :create
   after_create :ensure_family_presence!
 
   private

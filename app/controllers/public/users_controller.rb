@@ -8,17 +8,21 @@ class Public::UsersController < ApplicationController
   end
 
   def edit
-    @user.build_profile unless @user.profile
+    @user.build_profile(family: @user.family) unless @user.profile
     @user.profile.birthday ||= 30.years.ago.to_date
   end
 
   def update
+    @user.build_profile(family: @user.family) unless @user.profile
+    @user.profile.family ||= @user.family if @user.profile
+    
     if @user.update(user_params)
       flash[:notice] = "プロフィールを更新しました"
       redirect_to @user
     else
-      flash.now[:alert] = "更新に失敗しました"
-      render :edit
+      Rails.logger.debug "USER UPDATE ERRORS: #{@user.errors.full_messages.inspect}"
+      flash.now[:alert] = @user.errors.full_messages.join(' / ')
+      render :edit, status: :unprocessable_entity
     end
   end
 
