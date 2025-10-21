@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_10_08_071930) do
+ActiveRecord::Schema.define(version: 2025_10_20_205232) do
 
   create_table "families", force: :cascade do |t|
     t.string "code"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2025_10_08_071930) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 0, null: false
     t.integer "family_id"
+    t.boolean "admin", default: false, null: false
+    t.index ["admin"], name: "index_users_on_admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_id"], name: "index_users_on_family_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

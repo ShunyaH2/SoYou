@@ -47,6 +47,9 @@ class User < ApplicationRecord
     fam = Family.create!(name: "#{email.split('@').first}家", code: code)
     update!(family: fam)
   
+  def admin?
+    admin
+  end
   
   end
 end
