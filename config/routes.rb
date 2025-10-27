@@ -1,20 +1,17 @@
 Rails.application.routes.draw do
-  # 認証用
+  # --- Public（エンドユーザー） ---
   devise_for :users, controllers: {
     registrations: 'public/users/registrations',
-    sessions: 'public/users/sessions'
+    sessions:      'public/users/sessions'
   }
-  
-   # Public（URLに /public を付けない。Controller は Public::）
+
   scope module: :public do
     root 'homes#top'
-    
-    # ユーザーマイページ系
+
     resources :users, only: [:show, :edit, :update] do
       member { patch :withdraw }
     end
 
-    # 家族とプロフィール（ユーザー1任につき家族1つ想定なので単数resource）
     resource :family, only: [:show, :edit, :update] do
       resources :profiles
     end
@@ -22,11 +19,18 @@ Rails.application.routes.draw do
     resources :posts
   end
 
-   # Admin（URLに /admin を付ける。Controller は Admin::）
+  # --- Admin 認証（モデルは AdminUser、URL は /admin/*）---
+  devise_for :admin,
+              class_name: 'AdminUser',
+              path: 'admin',
+              skip: [:registrations, :passwords], 
+              controllers: {sessions: 'admin/admin_users/sessions' }
+  
+  # --- Admin 画面 ---
   namespace :admin do
-    root 'dashbord#top'
-    resources :users, only: [:index, :show, :update]
-    resources :users, only: [:index, :show, :destroy]
+    root 'dashboard#top'
+    resources :users,    only: [:index, :show, :update, :destroy]
+    resources :posts,    only: [:index, :show, :edit, :update, :destroy]
+    resources :profiles, only: [:index, :destroy]
   end
 end
-  

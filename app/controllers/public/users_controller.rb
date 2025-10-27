@@ -1,7 +1,7 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
-  before_action :ensure_self!, only: [:edit, :upadate, :withdraw]
+  before_action :ensure_self!, only: [:show, :edit, :upadate, :withdraw]
   
   def show
     @posts = @user.posts.includes(:profiles).order(created_at: :desc)

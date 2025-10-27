@@ -1,12 +1,13 @@
 class Public::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: %i(show edit update destroy)
-  before_action :authorize_owner!, only: %i(edit update destroy)
+  before_action :authorize_owner!, only: %i(show edit update destroy)
 
   def index
-    @posts = current_user.posts
-      .order(occurred_on: :desc)
-      .includes(:profiles)
+    @q = params[:q]
+    @posts = Post.search(@q)
+              .includes(:user)
+              .order(created_at: :desc)
   end
 
   def show
@@ -50,7 +51,7 @@ class Public::PostsController < ApplicationController
   end
 
   def authorize_owner!
-    redirect_to @post, alert: "権限がありません。" unless @post.user_id == current_user.id
+    redirect_to root_path, alert: "権限がありません。" unless @post.user_id == current_user.id
   end
 
   def post_params

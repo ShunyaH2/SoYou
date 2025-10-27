@@ -3,4 +3,11 @@
   <%= link_to "新規投稿", new_post_path, class: "btn btn-primary" %>
 </div>
 
+<% if params[:q].present? %>
+  <p class="text-muted mt-2">
+    検索ワード: <strong><%= h params[:q] %></strong>
+    （<%= @posts.size %>件）
+  </p>
+<% end %>
+
 <%= render "public/posts/table", posts: @posts %>

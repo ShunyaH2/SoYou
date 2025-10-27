@@ -8,13 +8,22 @@
     
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <% if user_signed_in? %>  
+        
+        <% if user_signed_in? %>
+        <!-- 一般ユーザー用 -->
           <li class="nav-item"><%= link_to "マイページ", user_path(current_user), class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "サインアウト", destroy_user_session_path, method: :delete, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "投稿一覧", posts_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "新規投稿", new_post_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "プロフィール管理", family_profiles_path, class: "nav-link" %></li>
+          <li class="nav-item">
+            <%= form_with url: posts_path, method: :get, local: true, class: "d-flex me-2" do %>
+              <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "キーワード検索（例：公園 散歩）" %>
+            <% end %>
+          </li>
+        
         <% else %>
+        <!-- 未ログイン -->
           <li class="nav-item"><%= link_to "About", "#{root_path}#about", class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "新規登録", new_user_registration_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "サインイン", new_user_session_path, class: "nav-link" %></li>

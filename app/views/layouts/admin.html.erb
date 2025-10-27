@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SoYou</title>
+    <title>管理画面 | SoYou</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -12,16 +12,13 @@
   </head>
   
   <body>
-    <%= render 'shared/header' %>
+    <%= render 'shared/admin_header' %>
 
     <div class="container mt-5">
       <%= render "shared/flash" %>
       <%= yield %>
     </div>
 
-    <%= render "shared/footer" %>
+    <%= render "shared/admin_footer" %>
   </body>
 </html>
-
-
-
