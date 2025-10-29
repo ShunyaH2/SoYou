@@ -1,3 +1,7 @@
 @use 'bootstrap/scss/bootstrap';
 @import "bootstrap";
 @import "hero";
+
+body {
+  padding-top: 70px;
+}

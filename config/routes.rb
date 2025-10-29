@@ -16,7 +16,9 @@ Rails.application.routes.draw do
       resources :profiles
     end
 
-    resources :posts
+    resources :posts do
+      resources :comments, only: [:create, :destroy]  
+    end
   end
 
   # --- Admin 認証（モデルは AdminUser、URL は /admin/*）---
@@ -32,5 +34,6 @@ Rails.application.routes.draw do
     resources :users,    only: [:index, :show, :update, :destroy]
     resources :posts,    only: [:index, :show, :edit, :update, :destroy]
     resources :profiles, only: [:index, :destroy]
+    resources :comments, only: [:index, :destroy]
   end
 end
