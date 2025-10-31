@@ -7,6 +7,8 @@
   </p>
 <% end %>
 
+<%= paginate @posts, params: request.query_parameters %>
+
 <table class="table table-striped">
   <thead>
     <tr>

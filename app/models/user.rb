@@ -7,6 +7,7 @@ class User < ApplicationRecord
   
   # 投稿（1ユーザーに複数）
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   # 本人用プロフィール（1ユーザーに1つ）
   has_one :profile, dependent: :destroy
@@ -22,6 +23,10 @@ class User < ApplicationRecord
   
   before_validation :assign_family_by_code, on: :create
   after_create :ensure_family_presence!
+
+  def admin?
+    admin
+  end
 
   private
 
@@ -46,10 +51,6 @@ class User < ApplicationRecord
 
     fam = Family.create!(name: "#{email.split('@').first}家", code: code)
     update!(family: fam)
-  
-  def admin?
-    admin
-  end
   
   end
 end

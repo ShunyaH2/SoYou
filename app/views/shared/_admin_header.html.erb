@@ -12,6 +12,7 @@
           <li class="nav-item"><%= link_to "管理者ホーム", admin_root_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "ユーザー管理", admin_users_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "投稿管理", admin_posts_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "コメント管理", admin_comments_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %></li>
           <li class="nav-item">
             <%= form_with ul: admin_posts_path, method: :get, local: true, class: "d-flex me-2" do %>

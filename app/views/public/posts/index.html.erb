@@ -10,4 +10,6 @@
   </p>
 <% end %>
 
+<%= paginate @posts, prams: request.query_parameters %>
+
 <%= render "public/posts/table", posts: @posts %>

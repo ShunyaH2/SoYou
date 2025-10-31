@@ -7,6 +7,8 @@ class Admin::PostsController < Admin::ApplicationController
             .includes(:user)
             .distinct
             .order(created_at: :desc)
+            .page(params[:page])
+            .per(10)
   end
 
   def show

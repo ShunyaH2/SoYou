@@ -8,6 +8,8 @@ class Public::PostsController < ApplicationController
     @posts = Post.search(@q)
               .includes(:user)
               .order(created_at: :desc)
+              .page(params[:page])
+              .per(10)
   end
 
   def show
