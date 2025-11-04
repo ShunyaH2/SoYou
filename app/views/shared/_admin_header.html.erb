@@ -13,12 +13,8 @@
           <li class="nav-item"><%= link_to "ユーザー管理", admin_users_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "投稿管理", admin_posts_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "コメント管理", admin_comments_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "性格タグ管理", admin_tags_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %></li>
-          <li class="nav-item">
-            <%= form_with ul: admin_posts_path, method: :get, local: true, class: "d-flex me-2" do %>
-              <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "投稿検索（本文/投稿者）" %>
-            <% end %>
-          </li>
         <% else %>
           <li class="nav-item"><%= link_to "ログイン", new_admin_session_path, class: "nav-link" %></li>
         <% end %>

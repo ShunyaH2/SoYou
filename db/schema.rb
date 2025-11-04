@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_10_27_203130) do
+ActiveRecord::Schema.define(version: 2025_11_02_220807) do
 
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(version: 2025_10_27_203130) do
     t.index ["profile_id"], name: "index_post_profiles_on_profile_id"
   end
 
+  create_table "post_tags", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
+    t.index ["post_id"], name: "index_post_tags_on_post_id"
+    t.index ["tag_id"], name: "index_post_tags_on_tag_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.text "body"
@@ -69,6 +79,14 @@ ActiveRecord::Schema.define(version: 2025_10_27_203130) do
     t.integer "family_id"
     t.index ["family_id"], name: "index_profiles_on_family_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.boolean "active", default: true, null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,6 +111,8 @@ ActiveRecord::Schema.define(version: 2025_10_27_203130) do
   add_foreign_key "comments", "users"
   add_foreign_key "post_profiles", "posts"
   add_foreign_key "post_profiles", "profiles"
+  add_foreign_key "post_tags", "posts"
+  add_foreign_key "post_tags", "tags"
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "families"
   add_foreign_key "profiles", "users"

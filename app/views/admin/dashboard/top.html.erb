@@ -3,8 +3,9 @@
   <p><%= current_admin.email %> としてログイン中です。</p>
 
   <ul class="mt-3">
-    <li><%= link_to "投稿管理", admin_posts_path %></li>
-    <li><%= link_to "ユーザー管理", admin_users_path %></li>
-    <li><%= link_to "コメント管理", admin_comments_path %></li>
+    <li><%= link_to "ユーザー管理", admin_users_path, class: "btn btn-outline-primary mb-2" %></li>
+    <li><%= link_to "投稿管理", admin_posts_path, class: "btn btn-outline-primary mb-2" %></li>
+    <li><%= link_to "コメント管理", admin_comments_path, class: "btn btn-outline-primary mb-2" %></li>
+    <li><%= link_to "性格タグ管理", admin_tags_path, class: "btn btn-outline-primary mb-2" %>
   </ul>
 </div>

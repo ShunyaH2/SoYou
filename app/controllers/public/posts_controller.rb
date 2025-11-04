@@ -4,12 +4,17 @@ class Public::PostsController < ApplicationController
   before_action :authorize_owner!, only: %i(show edit update destroy)
 
   def index
-    @q = params[:q]
-    @posts = Post.search(@q)
-              .includes(:user)
+    # Ransack 検索オブジェクト
+    @q = Post.ransack(params[:q])
+
+    @posts = @q.result(distinct: true)
+              .includes(:user, :profiles, :tags)
               .order(created_at: :desc)
               .page(params[:page])
               .per(10)
+    if params[:tag_id].present?
+      @posts = @posts.joins(:tags).where(tags: { id: params[:tag_id] })
+    end
   end
 
   def show
@@ -24,7 +29,11 @@ class Public::PostsController < ApplicationController
   def create
     @post = current_user.posts.new(post_params)
     if @post.save
-      redirect_to @post, notice: "投稿を作成しました。"
+      notice = "投稿を作成しました。"
+      if @post.invalid_tag_names.present?
+        notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
+      end
+      redirect_to @post, notice: notice
     else
       render :new, status: :unprocessable_entity
     end
@@ -37,7 +46,11 @@ class Public::PostsController < ApplicationController
     # 全外しでクリアできるよう、パラメータがない場合はから配列を入れる（保険）
     params[:post][:profile_ids] ||= [] if params[:post]
     if @post.update(post_params)
-      redirect_to @post, notice: "投稿を更新しました。"
+      notice = "投稿を更新しました。"
+      if @post.invalid_tag_names.present?
+        notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
+      end
+      redirect_to @post, notice: notice
     else
       render :edit, status: :unprocessable_entity
     end
@@ -59,6 +72,6 @@ class Public::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:body, :occurred_on, profile_ids: [])
+    params.require(:post).permit(:body, :occurred_on, :tag_names, profile_ids: [])
   end
 end

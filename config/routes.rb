@@ -35,5 +35,8 @@ Rails.application.routes.draw do
     resources :posts,    only: [:index, :show, :edit, :update, :destroy]
     resources :profiles, only: [:index, :destroy]
     resources :comments, only: [:index, :destroy]
+    resources :tags,     only: [:index, :edit, :update, :destroy, :new, :create] do
+      patch :restore, on: :member
+    end
   end
 end

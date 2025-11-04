@@ -1,0 +1,38 @@
+<%= search_form_for @q, url: url_for, method: :get, html: { class: "d-flex gap-2 align-items-center mb-3" } do |f| %>
+  <!-- 本文に含む -->
+  <div class="form-group mr-2">
+    <%= f.label :body_cont, "本文", class: "form-label" %>
+    <%= f.search_field :body_cont, class: "form-control", placeholder: "キーワードを入力" %>
+  </div>
+
+  <!-- エピソード対象者（プロフィール名に含む） -->
+  <div class="form-group mr-2">
+    <%= f.label :profiles_name_cont, "対象者", class: "form-label" %>
+    <%= f.search_field :profiles_name_cont, class: "form-control", placeholder: "対象者を入力" %>
+  </div>
+
+  <!-- 日付範囲 -->
+  <div class="form-group mr-2">
+    <%= f.label :occurred_on_gteq, "日付(自)", class: "form-label" %>
+    <%= f.date_field :occurred_on_gteq, class: "form-control" %>
+  </div>
+
+  <div class="form-group mr-2">
+    <%= f.label :occurred_on_lteq, "日付(至)", class: "form-label" %>
+    <%= f.date_field :occurred_on_lteq, class: "form-control" %>
+  </div>
+
+  <div class="form-group mr-2">
+    <%= f.label :tags_name_cont, "性格タグ", class: "form-label" %>
+    <%= f.search_field :tags_name_cont, class: "form-control", placeholder: "例）優しさ" %>
+  </div>
+
+  <div class="form-group mr-2">
+    <%= f.submit "検索", class: "px-4 btn btn-primary btn-block", style: "margin-top:29px;margin-bottom:-2px;" %>
+  </div>
+
+  <!-- 並び替えリンク -->
+  <div class="ml-2" style="margin-top:29px;margin-bottom:-2px;">
+    <%= sort_link(@q, :created_at, "新着順") %>
+  </div>
+<% end %>

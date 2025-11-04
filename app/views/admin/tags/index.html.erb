@@ -1,0 +1,75 @@
+<h1>タグ管理</h1>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <%= search_form_for @q, url: admin_tags_path, method: :get, html: { class: "form-inline" } do |f| %>
+      <div class="form-group mr-2 mb-2">
+        <%= f.label :name_cont, "名前", class: "mr-2" %>
+        <%= f.search_field :name_cont, class: "form-control", placeholder: "例）優しさ" %>
+      </div>
+
+      <div class="form-group mr-2 mb-2">
+        <%= f.label :active_eq, "状態", class: "mr-2" %>
+        <%= f.select :active_eq,
+            [["すべて", ""], ["有効", true], ["無効", false]],
+            {}, class: "form-control" %>
+      </div>
+
+      <%= f.submit "検索", class: "btn btn-primary mb-2 mr-2" %>
+      <%= link_to "リセット", admin_tags_path, class: "btn btn-outline-secondary mb-2" %>
+    <% end %>
+  </div>
+</div>
+
+<p class="text-muted">該当 <strong><%= @tags.total_count %></strong> 件</p>
+
+<%= link_to "新規タグ", new_admin_tag_path, class: "btn btn-primary mb-3" %>
+
+<%= paginate @tags %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>タグ名</th>
+      <th>状態</th>
+      <th>作成日時</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tags.each do |tag| %>
+      <tr>
+        <td><%= tag.id %></td>
+        <td><%= tag.name %></td>
+        <td>
+          <% if tag.active? %>
+            <span class="text-primary">有効</span>
+          <% else %>
+            <span class="text-danger font-weight-bold">無効</span>
+          <% end %>
+        </td>
+        <td><%= tag.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+        <td>
+          <% if tag.active? %>
+                      <%= link_to "無効化", admin_tag_path(tag),
+                          method: :delete,
+                          data: { confirm: "このタグを無効にしますか？" },
+                          class: "btn btn-warning btn-sm" %>
+                    <% else %>
+                      <%= link_to "有効化", restore_admin_tag_path(tag),
+                      method: :patch,
+                      data: { confirm: "このタグを再び有効にしますか？" },
+                      class: "btn btn-success btn-sm" %>
+          <% end %>
+          <%= link_to "編集", edit_admin_tag_path(tag), class: "btn btn-sm btn-outline-primary ml-3" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "← 管理者ホームに戻る", admin_root_path, class: "btn btn-secondary" %>
+
+
+

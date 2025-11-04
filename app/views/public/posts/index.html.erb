@@ -1,15 +1,18 @@
 <div class="d-flex justify-content-between align-items-center">
   <h2>投稿一覧</h2>
-  <%= link_to "新規投稿", new_post_path, class: "btn btn-primary" %>
 </div>
 
+<%= paginate @posts, params: request.query_parameters %>
+
+<%= render "shared/post_search_form" %>
+
+<!-- 検索語の表示 -->
 <% if params[:q].present? %>
-  <p class="text-muted mt-2">
-    検索ワード: <strong><%= h params[:q] %></strong>
-    （<%= @posts.size %>件）
+  <p class="text-muted">
+    検索中：
+    <% if params[:q][:body_cont].present? %>本文「<%= h params[:q][:body_cont] %>」 <% end %>
+    <% if params[:q][:profiles_name_cont].present? %>対象者「<%= h params[:q][:profiles_name_cont] %>」 <% end %>
   </p>
 <% end %>
-
-<%= paginate @posts, prams: request.query_parameters %>
 
 <%= render "public/posts/table", posts: @posts %>

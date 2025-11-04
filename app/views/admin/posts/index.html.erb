@@ -1,5 +1,7 @@
 <h1>投稿管理</h1>
 
+<%= render "shared/post_search_form" %>
+
 <% if params[:q].present? %>
   <p class="text-muted mt-2">
     検索ワード: <strong><%= h params[:q] %></strong>

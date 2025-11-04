@@ -2,10 +2,9 @@ class Admin::PostsController < Admin::ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @q = params[:q]
-    @posts = Post.search(@q)
-            .includes(:user)
-            .distinct
+    @q = Post.ransack(params[:q])
+    @posts = @q.result(distinct: true)
+            .includes(:user, :profiles)
             .order(created_at: :desc)
             .page(params[:page])
             .per(10)
@@ -41,6 +40,6 @@ class Admin::PostsController < Admin::ApplicationController
 
   # 管理者は本文のみ編集できる想定。必要に応じて許可カラムを増やす
   def post_params
-    params.require(:post).permit(:body)
+    params.require(:post).permit(:body, :tag_names)
   end
 end

@@ -2,6 +2,18 @@
 <p><strong>出来事の日付：</strong> <%= @post.occurred_on %></p>
 <p><strong>本文：</strong><br><%= simple_format(@post.body) %></p>
 
+<p>
+    <strong>タグ：</strong>
+    <% if @post.tags.any? %>
+      <% @post.tags.each do |tag| %>
+        <%= link_to "##{tag.name}", posts_path(q: { tags_name_eq: tag.name }),
+        class: "badge badge-warning mr-1 text-dark" %>
+      <% end %>
+    <% else %>
+      なし
+    <% end %>
+  </p>
+
 <div class="mt-3">
   <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
 
