@@ -6,15 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-admin = User.find_or_initialize_by(email: "admin@example.com")
-if admin.new_record?
-  admin.password = "password123"
-  admin.password_confirmation = "password123"
-end
-admin.admin = true
-admin.save!
-puts "Admin: #{admin.email} (id=#{admin.id})"
-
 traits = %w[
   優しさ 思いやり 共感 協調性 気配り 包容力
   慎重 率直 素直 正直 誠実 責任感 まじめ
