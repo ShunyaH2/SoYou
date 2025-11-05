@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2025_11_02_220807) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "active", default: true, null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
