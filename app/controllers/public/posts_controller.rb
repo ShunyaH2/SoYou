@@ -30,9 +30,9 @@ class Public::PostsController < ApplicationController
     @post = current_user.posts.new(post_params)
     if @post.save
       notice = "投稿を作成しました。"
-      if @post.invalid_tag_names.present?
-        notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
-      end
+      #if @post.invalid_tag_names.present?
+      #  notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
+      #end
       redirect_to @post, notice: notice
     else
       render :new, status: :unprocessable_entity
@@ -47,9 +47,9 @@ class Public::PostsController < ApplicationController
     params[:post][:profile_ids] ||= [] if params[:post]
     if @post.update(post_params)
       notice = "投稿を更新しました。"
-      if @post.invalid_tag_names.present?
-        notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
-      end
+      #if @post.invalid_tag_names.present?
+      #  notice << "(未登録タグをスキップ: #{@post.invalid_tag_names.join('、')}) "
+      #end
       redirect_to @post, notice: notice
     else
       render :edit, status: :unprocessable_entity
@@ -72,6 +72,6 @@ class Public::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:body, :occurred_on, :tag_names, profile_ids: [])
+    params.require(:post).permit(:body, :occurred_on, :tag_names, profile_ids: [], tag_ids: [])
   end
 end
