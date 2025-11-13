@@ -9,7 +9,11 @@ Rails.application.routes.draw do
     root 'homes#top'
 
     resources :users, only: [:show, :edit, :update] do
-      member { patch :withdraw }
+      member do
+        patch :promote_to_family_admin
+        patch :demote_from_family_admin
+      end
+        patch :withdraw, on: :member
     end
 
     resource :family, only: [:show, :edit, :update] do

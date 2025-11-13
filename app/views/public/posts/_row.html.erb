@@ -1,14 +1,19 @@
 <tr>
   <td><%= post.occurred_on %></td>
-  <td><%= truncate(post.body, length: 40) %></th>
-  <td>
-    <% if post.profiles.any? %>
-      <% post.profiles.each do |p| %>
-        <span class="badge bg-info"><%= p.name %></span>
-      <% end %>
-    <% else %>
-        <span class="text-muted">指定なし</span>
+  <td><%= truncate(post.body, length: 80) %></td>
+  <td><%= post.profiles.map(&:name).presence&.join("・") || "-" %></td>
+  <td class="text-right">
+    <%= link_to "詳細", post_path(post), class: "btn btn-sm btn-outline-secondary mr-1" %>
+
+    <% if can_edit_post?(post) %>
+      <%= link_to "編集", edit_post_path(post), class: "btn btn-sm btn-outline-primary mr-1" %>
+    <% end %>
+
+    <% if can_delete_post?(post) %>
+      <%= link_to "削除", post_path(post),
+            method: :delete,
+            data: { confirm: "本当に削除しますか？" },
+            class: "btn btn-sm btn-outline-danger" %>
     <% end %>
   </td>
-  <td><%= link_to "詳細", post_path(post), class: "btn btn-sm btn-outline-secondary" %></td>
 </tr>

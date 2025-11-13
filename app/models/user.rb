@@ -24,9 +24,38 @@ class User < ApplicationRecord
   before_validation :assign_family_by_code, on: :create
   after_create :ensure_family_presence!
 
-  def admin?
-    admin
+  def family_admin?
+    family_admin
   end
+
+  def family_admin_of?(family)
+    family_admin? && family_id.present? && family_id == family&.id
+  end
+
+  def can_promote?(other_user)
+    family_admin_of?(other_user.family)
+  end
+
+  def last_family_admin?
+    family_admin? && self.class.where(family_id: family_id, family_admin: true).where.not(id: id).none?
+  end
+
+  def ensure_family_presence!
+    return if family.present?
+
+    code = loop do
+      c = SecureRandom.alphanumeric(8).upcase
+      break c unless Family.exists?(code: c)
+    end
+
+    fam = Family.create!(name: "#{email.split('@').first}家", code: code)
+    update!(family: fam)
+
+    # 家族に管理者がいなければ自分を昇格
+    update!(family_admin: true) if fam.users.where(family_admin: true).none?
+  end
+
+  scope :family_admins, -> { where(family_admin: true) }
 
   private
 
@@ -38,19 +67,5 @@ class User < ApplicationRecord
     errors.add(:base, "不正なコードです") and return unless fam
 
     self.family = fam
-  end
-
-  # ユーザー作成後：familyが無ければ新規作成して自分に割当
-  def ensure_family_presence!
-    return if family.present?
-
-    code = loop do
-      c = SecureRandom.alphanumeric(8)
-      break c unless Family.exists?(code: c)
-    end
-
-    fam = Family.create!(name: "#{email.split('@').first}家", code: code)
-    update!(family: fam)
-  
   end
 end

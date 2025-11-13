@@ -1,0 +1,38 @@
+<h3 class="mb-3">家族メンバー</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ユーザー</th>
+      <th>権限</th>
+      <th class="text-right"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |member| %>
+      <tr>
+        <td><%= member.name.presence || member.email %></td>
+        <td>
+          <% if member.family_admin? %>
+            <span class="badge badge-primary">管理者</span>
+          <% else %>
+            <span class="badge badge-secondary">一般</span>
+          <% end %>
+        </td>
+        <td class="text-right">
+          <% if current_user.family_admin? && member != current_user %>
+            <% if member.family_admin? %>
+              <span class="badge badge-info">家族管理者</span>
+            <% else %>
+              <%= button_to "管理者に移譲",
+                  promote_to_family_admin_user_path(member),
+                  method: :patch,
+                  data: { confirm: "このユーザーに家族管理者を移譲します。よろしいですか？" },
+                  class: "btn btn-sm btn-outline-primary" %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

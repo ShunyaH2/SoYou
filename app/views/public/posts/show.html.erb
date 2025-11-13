@@ -14,16 +14,22 @@
     <% end %>
   </p>
 
-<div class="mt-3">
-  <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary" %>
+  <div class="mt-3">
+    <div class="mt-3 d-flex align-items-center">
+    <%= link_to "一覧に戻る", posts_path, class: "btn btn-secondary mr-2" %>
 
-  <% if @post.user.id == current_user.id %>
-    <%= link_to "編集", edit_post_path(@post), class: "btn btn-outline-primary" %>
-    <%= link_to "削除", post_path(@post),
-      method: :delete,
-      data: { confirm: "本当に削除しますか？" },
-      class: "btn btn-outline-danger" %>
-    <% end %>
+    <div class="btn-group" role="group">
+      <% if can_edit_post?(@post) %>
+        <%= link_to "編集", edit_post_path(@post), class: "btn btn-outline-primary" %>
+      <% end %>
+
+      <% if can_delete_post?(@post) %>
+        <%= link_to "削除", post_path(@post),
+              method: :delete,
+              data: { confirm: "本当に削除しますか？" },
+              class: "btn btn-outline-danger" %>
+      <% end %>
+    </div>
   </div>
 
   <p>

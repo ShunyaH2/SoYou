@@ -1,10 +1,13 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user
-  before_action :ensure_self!, only: [:show, :edit, :upadate, :withdraw]
+  before_action :set_user, only: %i[show edit update promote_to_family_admin demote_from_family_admin]
+  before_action :ensure_family_admin!, only: %i[promote_to_family_admin demote_from_family_admin]
+  before_action :ensure_same_family!,  only: %i[promote_to_family_admin demote_from_family_admin]
+  before_action :ensure_self!, only: %i[edit update withdraw]
   
   def show
     @posts = @user.posts.includes(:profiles).order(created_at: :desc)
+    @family_members = @user.family ? @user.family.users.order(:id) : []
   end
 
   def edit
@@ -37,6 +40,33 @@ class Public::UsersController < ApplicationController
     end
   end
 
+  def promote_to_family_admin
+    if @user.family_admin?
+      redirect_back fallback_location: user_path(@user), alert: "すでに家族管理者です。"
+      return
+    end
+
+    User.transaction do
+      User.where(family_id: @user.family_id, family_admin: true).update_all(family_admin: false)
+      @user.update!(family_admin: true)
+    end
+
+    redirect_back fallback_location: user_path(@user), notice: "家族管理者#{@user.name || @user.email}に移譲しました。"
+  rescue => e
+    redirect_back fallback_location: user_path(@user), alert: "移譲に失敗しました: #{e.message}"
+  end
+
+  def demote_from_family_admin
+    # 最後の家族管理者は降格不可
+    if @user.family_admin? && User.where(family_id: @user.family_id, family_admin: true).count == 1
+      redirect_back fallback_location: user_path(@user), alert: "最後の家族管理者は降格できません。"
+      return
+    end
+
+    @user.update!(family_admin: false)
+    redirect_back fallback_location: user_path(@user), notice: "家族管理者を解除しました。"
+  end
+
   private
 
   def set_user
@@ -44,7 +74,19 @@ class Public::UsersController < ApplicationController
   end
 
   def ensure_self!
-    redirect_to(root_path, alert: "権限がありません") unless @user == current_user
+      redirect_to(root_path, alert: "権限がありません") unless @user == current_user
+  end
+
+  def ensure_same_family!
+    unless @user.family_id.present? && current_user.family_id.present? && @user.family_id == current_user.family_id
+      redirect_back fallback_location: user_path(@user), alert: "同じファミリーのユーザーのみ操作できます。"
+    end
+  end
+
+  def ensure_family_admin!
+    unless current_user.family_admin?
+      redirect_back fallback_location: user_path(@user), alert: "家族管理者のみ実行できます。"
+    end
   end
 
   def user_params

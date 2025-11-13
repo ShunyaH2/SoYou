@@ -1,11 +1,19 @@
 class Public::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post, only: %i(show edit update destroy)
-  before_action :authorize_owner!, only: %i(show edit update destroy)
+  before_action :authorize_post_access!, only: %i(show)
+  before_action :authorize_post_editor!, only: %i(edit update destroy)
 
   def index
     # Ransack 検索オブジェクト
-    @q = Post.ransack(params[:q])
+    base =
+      if current_user.family_id.present?
+        Post.joins(:user).where(users: { family_id: current_user.family_id })
+      else
+        current_user.posts
+      end
+
+    @q = base.ransack(params[:q])
 
     @posts = @q.result(distinct: true)
               .includes(:user, :profiles, :tags)
@@ -64,11 +72,30 @@ class Public::PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:id]) # 自分の投稿だけ
+    @post = Post.find(params[:id])
   end
 
-  def authorize_owner!
-    redirect_to root_path, alert: "権限がありません。" unless @post.user_id == current_user.id
+  def authorize_post_access!
+    allowed =
+      (@post.user_id == current_user.id) ||
+      (
+        current_user.family_id.present? &&
+        @post.user&.family_id.present? &&
+        current_user.family_id == @post.user.family_id
+      )
+    redirect_to root_path, alert: "権限がありません。" unless allowed
+  end
+
+  def authorize_post_editor!
+    allowed =
+      (@post.user_id == current_user.id) ||
+      (
+        current_user.family_admin? &&
+        current_user.family_id.present? &&
+        @post.user&.family_id.present? &&
+        current_user.family_id == @post.user.family_id
+      )
+    redirect_to post_path(@post), alert: "この投稿を編集・削除する権限がありません。" unless allowed
   end
 
   def post_params

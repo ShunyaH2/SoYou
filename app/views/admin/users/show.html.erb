@@ -3,6 +3,10 @@
 <p><strong>ID:</strong> <%= @user.id %></p>
 <p><strong>名前:</strong> <%= @user.name %></p>
 <p><strong>メールアドレス:</strong> <%= @user.email %></p>
+<p>
+  <strong>ファミリーコード：</strong>
+  <%= @user.family&.code || content_tag(:span, "—", class: "text-muted") %>
+</p>
 <p><strong>登録日:</strong> <%= @user.created_at.strftime("%Y/%m/%d %H:%M") %></p>
 
 <hr>

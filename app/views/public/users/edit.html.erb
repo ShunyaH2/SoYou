@@ -13,6 +13,17 @@
             <%= f.email_field :email, class: "form-control" %>
           </div>
 
+          <div class="form-group">
+            <%= f.label :family_code, "ファミリーコード", class: "col-form-label" %>
+            <%= f.text_field :family_code,
+                  value: (@user.family&.code || ""),
+                  class: "form-control",
+                  placeholder: "家族から共有された8桁コード" %>
+            <small class="text-muted">
+              入力すると、そのファミリーに参加します（未入力なら変更しません）
+            </small>
+          </div>
+
           <fieldset class="border p-3 mb-3 rounded">
             <legend class="w-auto px-2 fs-5">プロフィール情報</legend>
 

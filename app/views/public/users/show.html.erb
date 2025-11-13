@@ -1,13 +1,61 @@
-<h1><%= (@user.name || @user.email) %>さんのページ</h1>
+<div class="container mt-4">
 
-<p>誕生日: <%= @user.profile&.birthday %></P>
+  <h1 class="mb-4 text-center">
+    <%= (@user.name || @user.email) %>さんのページ
+  </h1>
 
-<div class="actions">
+<% if current_user == @user %>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title mb-3">
+        <i class="fas fa-users mr-2 text-primary"></i>ファミリー情報
+      </h5>
+
+    <% if @user.family.present? %>
+      <p class="mb-2">
+        <strong>ファミリー名：</strong>
+        <span class="text-dark"><%= @user.family.name %></span>
+      </p>
+
+      <p class="mb-1">
+        <strong>ファミリーコード：</strong>
+        <code class="text-monospace font-weight-bold"><%= @user.family.code %></code>
+      </p>
+
+      <small class="text-muted">
+        （このコードを家族に共有すると同じファミリーに参加できます）
+      </small>
+    <% else %>
+      <p class="text-danger mb-0">ファミリーが未設定です。</P>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="card shadow-sm mb-2">
+  <div class="card-body">
+    <h5 class="card-title mb-3">
+      <i class="fas fa-user mr2 text-primary"></i>プロフィール情報
+    </h5>
+    <p class="mb-0">
+      <strong>誕生日: </strong>
+      <%= @user.profile&.birthday.present? ? @user.profile.birthday.strftime("%Y年%m月%d日") : "未登録" %>
+    </P>
+  </div>
+</div>
+
+<div class="actions mt-3 d-flex justify-content-center">
   <% if current_user == @user %>
-    <%= link_to "プロフィール編集", edit_user_path(@user), class: "btn btn-primary" %>
-    <%= button_to "退会（論理削除）", withdraw_user_path(@user), method: :patch,
-      data: { confirm: "本当に退会しますか？この操作は取り消せません。" },
-      class: "btn btn-danger" %>
+    <%= link_to "プロフィール編集", edit_user_path(@user),
+                class: "btn btn-primary mr-2" %>
+
+    <%= link_to "家族管理へ", family_path, class: "btn btn-outline-primary mr-2" %>
+
+    <%= button_to "退会（論理削除）",
+                  withdraw_user_path(@user),
+                  method: :patch,
+                  data: { confirm: "本当に退会しますか？この操作は取り消せません。" },
+                  form: { class: "d-inline" },
+                  class: "btn btn-danger" %>
   <% end %>
 </div>
 

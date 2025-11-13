@@ -5,6 +5,8 @@
       <th>ID</th>
       <th>名前</th>
       <th>メールアドレス</th>
+      <th>ファミリーコード</th>
+      <th>家族管理者</th>
       <th>登録日</th>
       <th></th>
     </tr>
@@ -15,6 +17,17 @@
         <td><%= user.id %></td>
         <td><%= link_to user.name, admin_user_path(user) %></td>
         <td><%= user.email %></td>
+        <td>
+          <% if user.family.present? %>
+            <span><%= user.family.code %></span>
+          <% else %>
+            <span class="text-muted">-</span>
+          <% end %>
+        </td>
+        <td class="text-center">
+          <%= user.family_admin? ? content_tag(:span, "家族管理者", class: "badge badge-info") : content_tag(:span, "—", class: "text-muted") %>
+        </td>
+        
         <td><%= user.created_at.strftime("%Y/%m/%d %H:%M") %></td>
         <td>
           <%= link_to "削除", admin_user_path(user),
