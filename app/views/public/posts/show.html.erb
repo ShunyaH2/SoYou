@@ -1,6 +1,15 @@
 <h2>投稿詳細</h2>
 <p><strong>出来事の日付：</strong> <%= @post.occurred_on %></p>
-<p><strong>本文：</strong><br><%= simple_format(@post.body) %></p>
+<p><strong>本文：</strong><%= simple_format(@post.body) %></p>
+
+ <p>
+    <strong>対象：</strong>
+    <% if @post.profiles.any? %>
+      <%= @post.profiles.map(&:name).join("・") %>
+    <% else %>
+       指定なし
+    <% end %>
+  </p>
 
 <p>
     <strong>タグ：</strong>
@@ -32,14 +41,6 @@
     </div>
   </div>
 
-  <p>
-    対象：
-    <% if @post.profiles.any? %>
-      <%= @post.profiles.map(&:name).join("・") %>
-    <% else %>
-       指定なし
-    <% end %>
-  </p>
 
   <hr id="comments" class="mt-4">
 

@@ -5,6 +5,13 @@ Rails.application.routes.draw do
     sessions:      'public/users/sessions'
   }
 
+  # --- Admin 認証（モデルは AdminUser、URL は /admin/*）---
+  devise_for :admin,
+  class_name: 'AdminUser',
+  path: 'admin',
+  skip: [:registrations, :passwords], 
+  controllers: {sessions: 'admin/admin_users/sessions' }
+
   scope module: :public do
     root 'homes#top'
 
@@ -21,16 +28,11 @@ Rails.application.routes.draw do
     end
 
     resources :posts do
-      resources :comments, only: [:create, :destroy]  
+      resources :comments, only: [:create, :edit, :update, :destroy]  
     end
   end
 
-  # --- Admin 認証（モデルは AdminUser、URL は /admin/*）---
-  devise_for :admin,
-              class_name: 'AdminUser',
-              path: 'admin',
-              skip: [:registrations, :passwords], 
-              controllers: {sessions: 'admin/admin_users/sessions' }
+
   
   # --- Admin 画面 ---
   namespace :admin do

@@ -1,19 +1,20 @@
 <li class="list-group-item d-flex justify-content-between align-items-start">
   <div>
-    <div class="fw-bold">
-      <%= @post.user_id == comment.user_id ? "投稿者" : "ユーザー" %>:
-      <%= comment.user.try(:name) || "ユーザー##{comment.user_id}" %>
-    </div>
-    <div style="white-space: pre-wrap;"><%= h comment.body %></div>
-    <small class="text-muted"><%= comment.created_at.strftime("%Y/%m/%d %H:%M") %></small>
+    <div class="mb-1"><%= simple_format(comment.body) %></div>
+    <small class="text-muted">
+      <%= (comment.user&.name.presence || comment.user&.email || "退会ユーザー") %> /
+      <%= l comment.created_at, format: :short %>
+    </small>
   </div>
 
-  <% if user_signed_in? && comment.user_id == current_user.id %>
-    <%= link_to "削除",
-        post_comment_path(@post, comment),
-        method: :delete,
-        data: { confirm: "本当に削除しますか？"},
-        class: "btn btn-outline-danger btn-sm" %>
-  <% end %>
+  <div class="ml-2">
+    <% if can_manage_comment?(comment) %>
+      <%= link_to "編集", edit_post_comment_path(comment.post, comment),
+                  class: "btn btn-sm btn-outline-primary mr-1" %>
+      <%= link_to "削除", post_comment_path(comment.post, comment),
+                  method: :delete,
+                  data: { confirm: "このコメントを削除しますか？" },
+                  class: "btn btn-sm btn-outline-danger" %>
+    <% end %>
+  </div>
 </li>
-

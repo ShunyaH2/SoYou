@@ -1,0 +1,21 @@
+<h2>コメント編集</h2>
+
+<p>
+  <strong>対象の投稿：</strong>
+  <%= link_to @post.body.truncate(30), post_path(@post, anchor: "comments") %>
+</p>
+
+<%= form_with model: [@post, @comment], local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :body, "コメント内容", class: "form-label" %>
+    <%= f.text_area :body, rows: 4, class: "form-control" %>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <%= link_to "投稿詳細に戻る",
+                post_path(@post, anchor: "comments"),
+                class: "btn btn-outline-secondary" %>
+
+    <%= f.submit "更新する", class: "btn btn-primary" %>
+  </div>
+<% end %>
