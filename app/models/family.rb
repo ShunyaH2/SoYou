@@ -7,6 +7,10 @@ class Family < ApplicationRecord
   
   before_validation :ensure_code, on: :create
 
+  def self.ransackable_attributes(_ = nil)
+    %w[id name code created_at updated_at]
+  end
+
   private
   def ensure_code
     return if code.present?

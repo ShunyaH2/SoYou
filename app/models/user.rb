@@ -18,6 +18,14 @@ class User < ApplicationRecord
   # 家族（ユーザー1人に対して1家族を自動作成）
   belongs_to :family, optional: true
 
+  def self.ransackable_attributes(_ = nil)
+    %w[id email created_at family_admin status]
+  end
+
+  def self.ransackable_associations(_ = nil)
+    %w[family profile]
+  end
+
    # 論理削除用
   enum status: { active: 0, withdrawn: 1 }
   

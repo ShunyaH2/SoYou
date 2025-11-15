@@ -2,6 +2,9 @@
   <td><%= post.occurred_on %></td>
   <td><%= truncate(post.body, length: 80) %></td>
   <td><%= post.profiles.map(&:name).presence&.join("・") || "-" %></td>
+  <td>
+    <%= post.user&.name.presence || post.user&.email %>
+  </td>
   <td class="text-right">
     <%= link_to "詳細", post_path(post), class: "btn btn-sm btn-outline-secondary mr-1" %>
 

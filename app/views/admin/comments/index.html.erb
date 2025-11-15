@@ -1,5 +1,35 @@
 <h1>コメント管理</h1>
 
+<%= form_with url: admin_comments_path, method: :get, local: true,
+                    html: { class: "form-inline flex-wrap mb-3" } do |f| %>
+
+  <div class="form-group mr-2 mb-2">
+    <%= f.label :body_cont, "本文", class: "mr-2" %>
+    <%= f.search_field :body_cont, class: "form-control form-control-sm w-auto", placeholder: "キーワード" %>
+  </div>
+
+  <div class="form-group mr-2 mb-2">
+    <%= f.label :user_email_cont, "Email", class: "mr-2" %>
+    <%= f.search_field :user_email_cont, class: "form-control form-control-sm w-auto", placeholder: "example@example.com" %>
+  </div>
+
+  <div class="form-group mr-2 mb-2">
+    <%= f.label :created_at_lteq, "作成日(自)", class: "mr-2" %>
+    <%= f.date_field :created_at_gteq, class: "form-control form-control-sm w-auto" %>
+  </div>
+
+  <div class="form-group mr-2 mb-2">
+    <%= f.label :created_at_lteq, "作成日(至)", class: "mr-2" %>
+    <%= f.date_field :created_at_lteq, class: "form-control form-control-sm w-auto" %>
+  </div>
+
+  <div class="form-group mb-2 ml-2">
+    <%= submit_tag "検索", class: "btn btn-primary mr-2" %>
+    <%= link_to "リセット", admin_comments_path, class: "btn btn-outline-secondary" %>
+  </div>
+
+<% end %>
+
 <%= paginate @comments, params: request.query_parameters %>
 
 <table class="table table-striped">

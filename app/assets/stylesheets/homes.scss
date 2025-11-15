@@ -1,3 +1,170 @@
-// Place all the styles related to the homes controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+/* ==== Hero（トップ） ============================ */
+
+.hero {
+  padding: 4rem 1.5rem 3rem;
+  background: #fff7f2; /* 少しあたたかい背景色 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}
+
+.hero-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #444;
+}
+
+.hero-content p {
+  margin-bottom: 1.5rem;
+  color: #666;
+  line-height: 1.8;
+}
+
+.hero-image {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+/* CTAボタンエリア */
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  justify-content: center;
+}
+
+/* リンクらしさを出すためのクラス */
+.btn.link-like {
+  background-color: transparent;
+  border: none;
+  color: #0d6efd; /* 青 */
+  text-decoration: underline;
+  padding-left: 0;
+  padding-right: 0;
+  box-shadow: none;
+}
+
+.btn.primary.link-like {
+  font-weight: 600;
+}
+
+/* 画面が広いときのレイアウト調整 */
+// @media (min-width: 768px) {
+//   .hero {
+//     flex-direction: row;
+//     justify-content: space-between;
+//     text-align: left;
+//   }
+
+//   .hero-content {
+//     max-width: 520px;
+//   }
+
+//   .cta {
+//     justify-content: flex-start;
+//     align-items: center;
+//   }
+// }
+
+/* ==== Aboutセクション ============================ */
+
+.about {
+  padding: 4rem 1.5rem 5rem;
+  background: #ffffff;
+}
+
+.about .container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.about h2 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #444;
+}
+
+.about-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.about-text p {
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 1.5rem;
+}
+
+/* 箇条書きのスタイルを少しやわらかく */
+.feature-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.feature-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ffb48a; /* やさしいオレンジ系 */
+}
+
+/* 右側のイメージブロック */
+.about-figure {
+  text-align: center;
+  margin: 0;
+}
+
+.about-image {
+  width: 180px;               /* ここでサイズを調整 */
+  height: 180px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  padding: 24px;              /* 画像の周りに余白をつける */
+  background: radial-gradient(circle at 30% 30%, #ffe1c4, #ffb7a1);
+  object-fit: contain;        /* 画像の比率を保ったまま収める */
+  display: block;
+}
+
+.about-figure figcaption {
+  font-size: 0.9rem;     /* ← 少し小さくする（0.9rem → 0.75rem） */
+  color: #777;
+  line-height: 1.4;
+  white-space: nowrap;    /* ← これが一番重要：強制的に1行にする */
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* 画面が広いときは左右2カラムに */
+@media (min-width: 768px) {
+  .about-grid {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .about-text {
+    flex: 2;
+  }
+
+  .about-figure {
+    flex: 1;
+  }
+}

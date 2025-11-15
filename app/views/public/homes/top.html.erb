@@ -3,22 +3,29 @@
   <div class="hero-content">
     <h1>SoYou - 大切な人の”らしさ”を未来に残す</h1>
     <p>
-      SoYouは、子供やパートナーのエピソードを簡単に記録し、未来に伝えるアプリです。
+      SoYouは、子供やパートナーのエピソードを記録し、未来に伝えるアプリです。
     </p>
     <%= image_tag "icon.jpg", alt: "SoYouのイメージイラスト", class: "hero-image" %>
   </div>
 
-  <% if user_signed_in? %>
-    <div class="cta">
-      <%= link_to "マイページへ", user_path(current_user), class: "btn primary" %>
-      <%= link_to "今すぐ投稿", new_post_path, class: "btn" %> 
-    </div>
-  <% else %>
-    <div class="cta">
-      <%= link_to "無料で始める(新規登録)", new_user_registration_path, class: "btn primary" %>
-      <%= link_to "サインイン", new_user_session_path, class: "btn" %>
-    </div>
-  <% end %>
+  <!-- ★ CTA -->
+  <div class="cta">
+    <% if user_signed_in? %>
+      <%= link_to "マイページへ",
+                  user_path(current_user),
+                  class: "btn primary link-like" %>
+      <%= link_to "今すぐ投稿",
+                  new_post_path,
+                  class: "btn link-like" %> 
+    <% else %>
+      <%= link_to "無料で始める(新規登録)",
+                  new_user_registration_path,
+                  class: "btn link-like" %>
+      <%= link_to "サインイン",
+                  new_user_session_path,
+                  class: "btn link-like" %>
+    <% end %>
+  </div>
 </section>
 
 <!-- About(要件の中核) -->
@@ -29,28 +36,19 @@
     <div class="about-grid">
       <div class="about-text">
         <p>
-          SoYouは、出来事の「事実」だけでなく、<strong>その人らしさが表れるエピソード</strong>を残すためのwebアプリです。
-          5W1Hに沿って短くメモし、必要なら写真を添えます。タグで興味・価値観・強みの傾向が見えてきます。
+          SoYouは、出来事の「事実」だけでなく、<strong>その人らしさがにじむ小さなエピソード</strong>を残せるwebアプリです。
+          AIがエピソードにタグをつけて整理してくれるので、興味・価値観・強みといった“その人らしさ”が自然と見えてきます。
         </p>
         <ul class="feature-list">
-          <li><strong>簡単記録：</strong>出来事の日付と一言メモ、最小入力でOK</li>
           <li><strong>"らしさ"が見える：</strong>性格や興味タグで振り返りやすい</li>
           <li><strong>家族で共有：</strong>家族コードで合流して、同じ人に一緒に投稿</li>
         </ul>
       </div>
 
       <figure class="about-figure">
-        <%= image_tag "icon.jpg", alt: "家族のエピソードをやさしく保存するイメージ", class: "about-image" %>
+        <%= image_tag "diary_icon.png", alt: "日記のイメージ", class: "about-image" %>
         <figcaption>「あなたらしさ」を未来に届ける、優しい記録。</figcaption>
       </figure>
     </div>
-
-    <% unless user_signed_in? %>
-      <div class="cta">
-        <%= link_to "今すぐ始める", new_user_registration_path, class: "btn primary" %>
-        <%= link_to "まずはサインイン", new_user_session_path, class: "btn" %>
-      </div>
-    <% end %>
   </div>
 </section>
-

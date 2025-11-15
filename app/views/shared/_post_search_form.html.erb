@@ -5,6 +5,12 @@
     <%= f.search_field :body_cont, class: "form-control", placeholder: "キーワードを入力" %>
   </div>
 
+  <!-- 投稿者（投稿者のプロフィール名） -->
+<div class="form-group mr-2">
+  <%= f.label :user_profile_name_cont, "投稿者", class: "form-label" %>
+  <%= f.search_field :user_profile_name_cont, class: "form-control", placeholder: "投稿者名を入力" %>
+</div>
+
   <!-- エピソード対象者（プロフィール名に含む） -->
   <div class="form-group mr-2">
     <%= f.label :profiles_name_cont, "対象者", class: "form-label" %>

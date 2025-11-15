@@ -1,9 +1,10 @@
 class Admin::UsersController < Admin::ApplicationController
   def index
-    @users = User
-              .all
-              .includes(:family)
-              .order(created_at: :desc)
+    @q = User.includes(:family, :profile).ransack(params[:q])
+    @users = @q.result(distinct: true)
+              .order(:id)
+              .page(params[:page])
+              .per(20)
   end
 
   def show

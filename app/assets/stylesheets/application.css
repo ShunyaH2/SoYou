@@ -1,7 +1,3 @@
-body {
-  padding-top: 70px;
-}
-
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
@@ -17,3 +13,9 @@ body {
  *= require_tree .
  *= require_self
  */
+
+ body {
+  padding-top: 70px;
+}
+
+

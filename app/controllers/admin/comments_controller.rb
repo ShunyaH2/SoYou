@@ -1,10 +1,11 @@
 class Admin::CommentsController < Admin::ApplicationController
   def index
-    @comments = Comment
-                  .includes(:user, :post)
+    @q = Comment.includes(:user, :post).ransack(params[:q])
+
+    @comments = @q.result(distinct: true)
                   .order(created_at: :desc)
                   .page(params[:page])
-                  .per(10)
+                  .per(20)
   end
 
   def destroy
