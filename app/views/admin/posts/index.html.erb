@@ -2,12 +2,10 @@
 
 <%= render "shared/post_search_form" %>
 
-<% if params[:q].present? %>
-  <p class="text-muted mt-2">
-    検索ワード: <strong><%= h params[:q] %></strong>
-    （<%= @posts.size %>件）
-  </p>
-<% end %>
+<p class="text-muted">
+  該当 <strong><%= @posts.size %></strong> 件
+</p>
+
 
 <%= paginate @posts, params: request.query_parameters %>
 
@@ -17,6 +15,7 @@
       <th>ID</th>
       <th>投稿者</th>
       <th>本文</th>
+      <th style="width: 200px;">性格タグ</th>
       <th>投稿日</th>
       <th></th>
     </tr>
@@ -33,7 +32,18 @@
           <% end %>
         </td>
         <td>
-          <%= truncate(post.body, length: 30) %>
+          <%= truncate(post.body, length: 20) %>
+        </td>
+        <td style="width: 200px;">
+          <% tags = post.tags %>
+
+          <% tags.first(3).each do |tag| %>
+            <span class="badge badge-info mr-1"><%= tag.name %></span>
+          <% end %>
+
+          <% if tags.size > 3 %>
+            <span class="text-muted">…（+<%= tags.size - 3 %>）</span>
+          <% end %>
         </td>
         <td><%= post.created_at.strftime("%Y/%m/%d %H:%M") %></td>
         <td>

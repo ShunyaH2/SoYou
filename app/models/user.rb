@@ -28,6 +28,10 @@ class User < ApplicationRecord
 
    # 論理削除用
   enum status: { active: 0, withdrawn: 1 }
+
+  def active_for_authentication?
+    super && active?
+  end
   
   before_validation :assign_family_by_code, on: :create
   after_create :ensure_family_presence!

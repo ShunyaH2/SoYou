@@ -3,17 +3,46 @@
 <p><strong>ID:</strong> <%= @user.id %></p>
 <p><strong>名前:</strong> <%= @user.name %></p>
 <p><strong>メールアドレス:</strong> <%= @user.email %></p>
+
 <p>
   <strong>ファミリーコード：</strong>
   <%= @user.family&.code || content_tag(:span, "—", class: "text-muted") %>
 </p>
+
+<p>
+  <strong>家族管理者：</strong>
+  <% if @user.family_admin? %>
+    <span class="badge badge-info">家族管理者</span>
+  <% else %>
+    <span class="badge badge-secondary">一般ユーザー</span>
+  <% end %>
+</p>
+
 <p><strong>登録日:</strong> <%= @user.created_at.strftime("%Y/%m/%d %H:%M") %></p>
 
 <hr>
 
-<%= link_to "削除", admin_user_path(@user),
-method: :delete,
-data: { confirm: "本当に削除しますか？" },
-class: "btn btn-danger" %>
+<div class="mb-3">
+  <% if @user.family_admin? %>
+    <%= button_to "一般ユーザーにする",
+          demote_family_admin_admin_user_path(@user),
+          method: :patch,
+          class: "btn btn-outline-secondary mr-2",
+          data: { confirm: "本当に家族管理者を解除しますか？" } %>
+  <% else %>
+    <%= button_to "家族管理者にする",
+          promote_family_admin_admin_user_path(@user),
+          method: :patch,
+          class: "btn btn-outline-primary mr-2",
+          data: { confirm: "このユーザーを家族管理者にしますか？" } %>
+  <% end %>
+</div>
 
-<% link_to "← 一覧に戻る", admin_users_path, class: "btn btn-secondary" %>
+<div class="mb-3">
+  <%= link_to "削除", admin_user_path(@user),
+        method: :delete,
+        data: { confirm: "本当に削除しますか？" },
+        class: "btn btn-danger mr-2" %>
+
+  <%= link_to "← 一覧に戻る", admin_users_path, class: "btn btn-secondary" %>
+</div>

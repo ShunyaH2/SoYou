@@ -1,6 +1,7 @@
 class Public::UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show edit update promote_to_family_admin demote_from_family_admin]
+  before_action :set_user, only: %i[show edit update withdraw promote_to_family_admin demote_from_family_admin]
+  before_action :ensure_same_family_or_self!, only: %i[show]
   before_action :ensure_family_admin!, only: %i[promote_to_family_admin demote_from_family_admin]
   before_action :ensure_same_family!,  only: %i[promote_to_family_admin demote_from_family_admin]
   before_action :ensure_self!, only: %i[edit update withdraw]
@@ -73,8 +74,23 @@ class Public::UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def ensure_same_family_or_self!
+    # 自分自身ならOK
+    return if @user == current_user
+  
+    # family_id が両方あって、かつ同じならOK
+    if @user.family_id.present? && current_user.family_id.present? &&
+       @user.family_id == current_user.family_id
+      return
+    end
+  
+    # それ以外はNG
+    redirect_to(root_path, alert: "同じ家族のユーザーのみ閲覧できます。")
+  end
+  
+
   def ensure_self!
-      redirect_to(root_path, alert: "権限がありません") unless @user == current_user
+      redirect_to(root_path, alert: "権限がありません") unless @user && @user == current_user
   end
 
   def ensure_same_family!

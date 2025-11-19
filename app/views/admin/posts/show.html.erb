@@ -20,6 +20,18 @@
     <td style="white-space: pre-wrap;"><%= @post.body %></td>
   </tr>
   <tr>
+    <th>タグ</th>
+    <td>
+      <% if @post.tags.any? %>
+        <% @post.tags.each do |tag| %>
+          <span class="badge badge-info mr-1"><%= tag.name %></span>
+        <% end %>
+      <% else %>
+        <span class="text-muted">なし</span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
     <th>投稿日</th>
     <td><%= @post.created_at.strftime("%Y/%m/%d %H:%M") %></td>
   </tr>
@@ -28,6 +40,24 @@
     <td><%= @post.updated_at.strftime("%Y/%m/%d %H:%M") %></td>
   </tr>
 </table>
+
+<h2 class="mt-4">コメント</h2>
+
+<% if @comments.present? %>
+  <ul class="list-group mb-3">
+    <% @comments.each do |comment| %>
+      <li class="list-group-item">
+        <div class="mb-1"><%= simple_format(comment.body) %></div>
+        <small class="text-muted">
+          <%= (comment.user&.name.presence || comment.user&.email || "退会ユーザー") %> /
+          <%= comment.created_at.strftime("%Y/%m/%d %H:%M") %>
+        </small>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="text-muted">この投稿にはまだコメントがありません。</p>
+<% end %>
 
 <div class="d-flex gap-2">
   <%= link_to "編集", edit_admin_post_path(@post), class: "btn btn-primary" %>

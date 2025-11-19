@@ -11,6 +11,13 @@
     </div>
 
     <div class="form-group mr-2">
+      <%= f.label :profile_name_cont, "ステータス", class: "mr-2" %>
+      <%= f.search_field :status_cont,
+      class: "form-control",
+      placeholder: "有効 or 無効" %>
+    </div>
+
+    <div class="form-group mr-2">
       <%= f.label :email_cont, "メールアドレス", class: "mr-2" %>
       <%= f.search_field :email_cont,
       class: "form-control",
@@ -50,6 +57,7 @@
     <tr>
       <th>ID</th>
       <th>名前</th>
+      <th>ステータス</th>
       <th>メールアドレス</th>
       <th>ファミリーコード</th>
       <th>家族管理者</th>
@@ -62,6 +70,15 @@
       <tr>
         <td><%= user.id %></td>
         <td><%= link_to user.name, admin_user_path(user) %></td>
+        <td class="text-center">
+          <% if user.active? %>
+            <span class="badge badge-success">有効</span>
+          <% elsif user.withdrawn? %>
+            <span class="badge badge-secondary">退会</span>
+          <% else %>
+            <span class="badge badge-light"><%= user.status %></span>
+          <% end %>
+        </td>
         <td><%= user.email %></td>
         <td>
           <% if user.family.present? %>
@@ -76,9 +93,9 @@
         
         <td><%= user.created_at.strftime("%Y/%m/%d %H:%M") %></td>
         <td>
-          <%= link_to "削除", admin_user_path(user),
+          <%= link_to "退会", admin_user_path(user),
           method: :delete,
-          data: { confirm: "本当に削除しますか？" },
+          data: { confirm: "本当に退会（論理削除）しますか？" },
           class: "btn btn-danger btn-sm" %>
         </td>
       </tr>

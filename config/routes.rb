@@ -37,7 +37,12 @@ Rails.application.routes.draw do
   # --- Admin 画面 ---
   namespace :admin do
     root 'dashboard#top'
-    resources :users,    only: [:index, :show, :update, :destroy]
+    resources :users, only: [:index, :show, :update, :destroy] do
+      member do
+        patch :promote_family_admin   # 家族管理者にする
+        patch :demote_family_admin    # 一般ユーザーに戻す
+      end
+    end
     resources :posts,    only: [:index, :show, :edit, :update, :destroy]
     resources :profiles, only: [:index, :destroy]
     resources :comments, only: [:index, :destroy]

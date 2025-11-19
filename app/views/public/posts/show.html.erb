@@ -6,7 +6,10 @@
 </p>
 
 <p><strong>出来事の日付：</strong> <%= @post.occurred_on %></p>
-<p><strong>本文：</strong><%= simple_format(@post.body) %></p>
+<p>
+  <strong>本文：</strong>
+  <%= simple_format(@post.body, {}, wrapper_tag: "span") %>
+</p>
 
  <p>
     <strong>対象：</strong>
@@ -35,7 +38,7 @@
 
     <div class="btn-group" role="group">
       <% if can_edit_post?(@post) %>
-        <%= link_to "編集", edit_post_path(@post), class: "btn btn-outline-primary" %>
+        <%= link_to "編集", edit_post_path(@post), class: "btn btn-outline-primary mr-2" %>
       <% end %>
 
       <% if can_delete_post?(@post) %>

@@ -7,10 +7,12 @@ class Admin::PostsController < Admin::ApplicationController
             .includes(:user, :profiles)
             .order(created_at: :desc)
             .page(params[:page])
-            .per(10)
+            .per(20)
   end
 
   def show
+    @post = Post.includes(comments: :user).find(params[:id])
+    @comments = @post.comments.order(created_at: :asc)
   end
 
   def edit

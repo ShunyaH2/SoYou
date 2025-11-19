@@ -3,7 +3,7 @@
     <div class="mb-1"><%= simple_format(comment.body) %></div>
     <small class="text-muted">
       <%= (comment.user&.name.presence || comment.user&.email || "退会ユーザー") %> /
-      <%= l comment.created_at, format: :short %>
+      <%= comment.created_at.strftime("%Y/%m/%d") %>
     </small>
   </div>
 
