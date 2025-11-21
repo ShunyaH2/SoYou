@@ -20,7 +20,7 @@
     <% end %>
   </p>
 
-<p>
+  <p>
     <strong>タグ：</strong>
     <% if @post.tags.any? %>
       <% @post.tags.each do |tag| %>
@@ -28,7 +28,11 @@
         class: "badge badge-warning mr-1 text-dark" %>
       <% end %>
     <% else %>
-      なし
+      <span class="text-muted" style="font-size: 0.9em;">
+        このエピソードには、まだ性格タグがついていません。<br>
+        文章がとても短い場合や、行動や気持ちが読み取りづらい内容のときは、
+        AI による自動タグ付けが行われないことがあります。
+      </span>
     <% end %>
   </p>
 

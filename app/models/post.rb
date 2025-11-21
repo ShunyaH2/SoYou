@@ -19,4 +19,12 @@ class Post < ApplicationRecord
   def self.ransackable_attributes(_ = nil)
     %w[id body occurred_on created_at updated_at user_id]
   end
+
+  after_save :auto_assign_tags
+
+  private
+
+  def auto_assign_tags
+    TagGenerator.new(self).assign_tags!
+  end
 end
