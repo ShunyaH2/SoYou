@@ -1,6 +1,6 @@
 <tr>
   <td><%= post.occurred_on %></td>
-  <td><%= truncate(post.body, length: 80) %></td>
+  <td><%= truncate(post.body, length: 20) %></td>
   <td><%= post.profiles.map(&:name).presence&.join("・") || "-" %></td>
   <td>
     <%= post.user&.name.presence || post.user&.email %>
