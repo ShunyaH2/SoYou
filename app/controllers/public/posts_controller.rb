@@ -43,6 +43,7 @@ class Public::PostsController < ApplicationController
       #end
       redirect_to @post, notice: notice
     else
+      flash.now[:alert] = "投稿に失敗しました"
       render :new, status: :unprocessable_entity
     end
   end
