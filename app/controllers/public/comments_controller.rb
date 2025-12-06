@@ -2,10 +2,11 @@ class Public::CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_post
   before_action :set_comment, only: %i[edit update destroy]
-  before_action :authorize_comment!, only: %i[edit update destroy]
+  before_action :ensure_comment_owner!, only: %i[edit update destroy]
 
   def create
     @comment = @post.comments.build(comment_params.merge(user: current_user))
+
     if @comment.save
       redirect_to post_path(@post, anchor: "comments"), notice: "コメントを投稿しました。"
     else
@@ -22,7 +23,7 @@ class Public::CommentsController < ApplicationController
     if @comment.update(comment_params)
       redirect_to post_path(@post, anchor: "comments"), notice: "コメントを更新しました。"
     else
-      flash.now[:alert] = "コメントを更新できませんでいｓた。"
+      flash.now[:alert] = "コメントを更新できませんでした。"
       render :edit, status: :unprocessable_entity
     end
   end
@@ -42,10 +43,11 @@ class Public::CommentsController < ApplicationController
     @comment = @post.comments.find(params[:id])
   end
 
-  def authorize_comment!
-    unless helpers.can_manage_comment?(@comment)
-      redirect_to post_path(@post, anchor: "comments"), alert: "削除権限がありません" 
-    end
+  def ensure_comment_owner!
+    return if @comment.user_id == current_user.id
+
+    redirect_to post_path(@post, anchor: "comments"),
+                alert: "自分のコメントのみ編集・削除できます。"
   end
 
   def comment_params
