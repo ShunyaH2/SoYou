@@ -25,6 +25,10 @@ class Post < ApplicationRecord
   private
 
   def auto_assign_tags
+    unless ENV['GEMINI_API_KEY'].present?
+      Rails.logger.warn "[Post#auto_assign_tags] GEMINI_API_KEY not set. Skipping AI tagging."
+      return
+    end
     TagGenerator.new(self).assign_tags!
   end
 end
