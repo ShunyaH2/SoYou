@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_11_09_201258) do
+ActiveRecord::Schema.define(version: 2025_12_12_155542) do
 
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(version: 2025_11_09_201258) do
     t.boolean "family_admin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["family_id"], name: "index_users_on_family_id"
-    t.index ["family_id"], name: "index_users_on_family_id_unique_family_admin", unique: true, where: "family_admin = 1"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["status"], name: "index_users_on_status"
   end

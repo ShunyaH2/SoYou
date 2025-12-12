@@ -2,9 +2,9 @@
 require 'rails_helper'
 
 RSpec.describe "Posts(feature)", type: :system do
-  #before do
-  #  driven_by(:rack_test)
-  #end
+  before do
+    skip 'Cloud9ではchromedriverが動かないためスキップ'
+  end
 
   let(:user) { FactoryBot.create(:user) }
 

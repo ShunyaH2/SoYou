@@ -2,6 +2,10 @@
 require 'rails_helper'
 
 RSpec.describe "Comments(system)", type: :system do
+  before do
+    skip 'Cloud9ではchromedriverが動かないためスキップ'
+  end
+  
   let(:user) { FactoryBot.create(:user) }
 
   # Post を作るときに TagGenerator が走るので、モックする
