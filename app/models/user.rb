@@ -53,7 +53,6 @@ class User < ApplicationRecord
   end
 
   def ensure_family_presence!
-    # すでに family がある（＝家族コード参加）の場合は何もしない
     return if family.present?
   
     code = loop do
@@ -62,8 +61,6 @@ class User < ApplicationRecord
     end
   
     fam = Family.create!(name: "#{email.split('@').first}家", code: code)
-  
-    # このユーザーは「家族新規作成者」なので admin にする
     update!(family: fam, family_admin: true)
   end
 
@@ -79,5 +76,6 @@ class User < ApplicationRecord
     errors.add(:base, "不正なコードです") and return unless fam
 
     self.family = fam
+    self.family_admin = false
   end
 end
