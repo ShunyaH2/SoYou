@@ -53,18 +53,18 @@ class User < ApplicationRecord
   end
 
   def ensure_family_presence!
+    # すでに family がある（＝家族コード参加）の場合は何もしない
     return if family.present?
-
+  
     code = loop do
       c = SecureRandom.alphanumeric(8).upcase
       break c unless Family.exists?(code: c)
     end
-
+  
     fam = Family.create!(name: "#{email.split('@').first}家", code: code)
-    update!(family: fam)
-
-    # 家族に管理者がいなければ自分を昇格
-    update!(family_admin: true) if fam.users.where(family_admin: true).none?
+  
+    # このユーザーは「家族新規作成者」なので admin にする
+    update!(family: fam, family_admin: true)
   end
 
   scope :family_admins, -> { where(family_admin: true) }
