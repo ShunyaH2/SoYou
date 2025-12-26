@@ -39,6 +39,11 @@
     <p class="mb-0">
       <strong>誕生日: </strong>
       <%= @user.profile&.birthday.present? ? @user.profile.birthday.strftime("%Y年%m月%d日") : "未登録" %>
+      <% if @user.profile&.image&.attached? %>
+        <%= image_tag @user.profile&.image.variant(resize: "100x100") %>
+      <% else %>
+        <%= image_tag 'no_image.jpg' %>
+      <% end %>
     </P>
   </div>
 </div>
