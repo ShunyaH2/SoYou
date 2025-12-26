@@ -11,14 +11,16 @@ class AddFamilyRefToUsers < ActiveRecord::Migration[6.1]
       add_foreign_key :users, :families
     end
 
-    # 既存ユーザーの family_id を families(user_id) からバックフィル
-    say_with_time "Backfilling users.family_id from families.user_id" do
-      execute <<~SQL
-        UPDATE users
-        INNER JOIN families ON families.user_id = users.id
-        SET users.family_id = families.id
-        WHERE users.family_id IS NULL
-      SQL
+    if Rails.env.production?
+      # 既存ユーザーの family_id を families(user_id) からバックフィル
+      say_with_time "Backfilling users.family_id from families.user_id" do
+        execute <<~SQL
+          UPDATE users
+          INNER JOIN families ON families.user_id = users.id
+          SET users.family_id = families.id
+          WHERE users.family_id IS NULL
+        SQL
+      end
     end
   end
 
