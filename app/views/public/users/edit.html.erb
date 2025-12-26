@@ -43,8 +43,13 @@
               <div class="mb-3">
                 <%= pf.label :image, "icon", class: "form-label" %>
                 <% if @user.profile&.image&.attached? %>
-                  <%= image_tag @user.profile&.image.variant(resize: "100x100") %>
+                  <% if @user.profile.image.variable? %>
+                    <%= image_tag @user.profile.image.variant(resize_to_limit: [100, 100]) %>
+                  <% else %>
+                    <%= image_tag url_for(@user.profile.image) %>
+                  <% end %>
                 <% end %>
+                
                 <%= pf.file_field :image, class: "form-control" %>
               </div>
             <% end %>

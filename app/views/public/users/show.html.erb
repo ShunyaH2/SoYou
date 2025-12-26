@@ -37,13 +37,19 @@
       <i class="fas fa-user mr2 text-primary"></i>プロフィール情報
     </h5>
     <p class="mb-0">
-      <strong>誕生日: </strong>
-      <%= @user.profile&.birthday.present? ? @user.profile.birthday.strftime("%Y年%m月%d日") : "未登録" %>
       <% if @user.profile&.image&.attached? %>
-        <%= image_tag @user.profile&.image.variant(resize: "100x100") %>
-      <% else %>
+        <% if @user.profile.image.variable? %>
+          <%= image_tag @user.profile.image.variant(resize_to_limit: [100, 100]) %>
+        <% else %>
+          <%= image_tag url_for(@user.profile.image) %> 
+        <% end %>
+        <% else %>
         <%= image_tag 'no_image.jpg' %>
       <% end %>
+      <p class="mb-2">
+        <strong>誕生日: </strong>
+        <%= @user.profile&.birthday.present? ? @user.profile.birthday.strftime("%Y年%m月%d日") : "未登録" %>
+      </p>   
     </P>
   </div>
 </div>
